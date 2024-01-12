@@ -18,7 +18,7 @@ npm install @ricardopaul0/react-daterange-picker --save
 yarn add @ricardopaul0/react-daterange-picker
 ```
 
-![Screenshot](/screenshot_1.png?raw=true "Screenshot")
+![Screenshot](/date-range-picker.png?raw=true "Screenshot")
 
 ## Basic Example
 ```tsx
