@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {useState } from "react";
 import {
 	addMonths,
 	isSameDay,
@@ -42,6 +42,8 @@ interface DateRangePickerProps {
 	minDate?: Date | string;
 	maxDate?: Date | string;
 	onChange: (dateRange: DateRange) => void;
+	handleApply: () => void;
+	handleCancel: () => void;
 }
 
 const DateRangePickerImpl: React.FunctionComponent<DateRangePickerProps> = props => {
@@ -53,7 +55,9 @@ const DateRangePickerImpl: React.FunctionComponent<DateRangePickerProps> = props
 		initialDateRange,
 		minDate,
 		maxDate,
-		definedRanges = defaultRanges
+		definedRanges = defaultRanges,
+		handleApply,
+		handleCancel,
 	} = props;
 
 	const minDateValid = parseOptionalDate(minDate, addYears(today, -10));
@@ -65,10 +69,10 @@ const DateRangePickerImpl: React.FunctionComponent<DateRangePickerProps> = props
 	);
 
 	// console.log("rendering DateRangePicker");
-	const [dateRange, setDateRange] = React.useState<DateRange>({ ...initialDateRange });
-	const [hoverDay, setHoverDay] = React.useState<Date>();
-	const [firstMonth, setFirstMonth] = React.useState<Date>(intialFirstMonth || today);
-	const [secondMonth, setSecondMonth] = React.useState<Date>(
+	const [dateRange, setDateRange] = useState<DateRange>({ ...initialDateRange });
+	const [hoverDay, setHoverDay] = useState<Date>();
+	const [firstMonth, setFirstMonth] = useState<Date>(intialFirstMonth || today);
+	const [secondMonth, setSecondMonth] = useState<Date>(
 		initialSecondMonth || addMonths(firstMonth, 1)
 	);
 
@@ -163,6 +167,8 @@ const DateRangePickerImpl: React.FunctionComponent<DateRangePickerProps> = props
 			setDateRange={setDateRangeValidated}
 			helpers={helpers}
 			handlers={handlers}
+			handleApply={handleApply}
+			handleCancel={handleCancel}
 		/>
 	) : null;
 };

@@ -2,19 +2,18 @@ import React from "react";
 import {
 	Paper,
 	Grid,
-	Typography,
 	Divider,
 	createStyles,
 	WithStyles,
 	Theme,
-	withStyles
+	withStyles,
 } from "@material-ui/core";
-import { format, differenceInCalendarMonths } from "date-fns";
-import ArrowRightAlt from "@material-ui/icons/ArrowRightAlt";
+import { differenceInCalendarMonths } from "date-fns";
 import Month from "./Month";
 import DefinedRanges from "./DefinedRanges";
 import { DateRange, DefinedRange, Setter, NavigationAction } from "../types";
 import { MARKERS } from "..";
+import { grey } from "@material-ui/core/colors";
 
 const styles = (theme: Theme) =>
 	createStyles({
@@ -28,6 +27,33 @@ const styles = (theme: Theme) =>
 		divider: {
 			borderLeft: `1px solid ${theme.palette.action.hover}`,
 			marginBottom: 20
+		},
+		ranges: {
+			width: 200
+		},
+		buttonsWrapper: {
+			padding: "1rem",
+			gap: 10,
+			display: "flex",
+			justifyContent: "center",
+		},
+		applyButton: {
+			cursor: "pointer",
+			backgroundColor: "#a4d481",
+			border: "none",
+			padding: 10,
+			fontWeight: 600,
+			borderRadius: 5,
+			width: 92
+		},
+		cancelButton: {
+			cursor: "pointer",
+			backgroundColor: grey[40],
+			border: "1px solid #b8b8b8",
+			padding: 10,
+			fontWeight: 600,
+			borderRadius: 5,
+			width: 92
 		}
 	});
 
@@ -49,6 +75,8 @@ interface MenuProps extends WithStyles<typeof styles> {
 		onDayHover: (day: Date) => void;
 		onMonthNavigate: (marker: symbol, action: NavigationAction) => void;
 	};
+	handleApply: () => void;
+	handleCancel: () => void;
 }
 
 const Menu: React.FunctionComponent<MenuProps> = props => {
@@ -64,7 +92,9 @@ const Menu: React.FunctionComponent<MenuProps> = props => {
 		setSecondMonth,
 		setDateRange,
 		helpers,
-		handlers
+		handlers,
+		handleApply,
+		handleCancel,
 	} = props;
 	const { startDate, endDate } = dateRange;
 	const canNavigateCloser = differenceInCalendarMonths(secondMonth, firstMonth) >= 2;
@@ -73,23 +103,15 @@ const Menu: React.FunctionComponent<MenuProps> = props => {
 		<Paper elevation={5} square>
 			<Grid container direction="row" wrap="nowrap">
 				<Grid>
-					<Grid container className={classes.header} alignItems="center">
-						<Grid item className={classes.headerItem}>
-							<Typography variant="subtitle1">
-								{startDate ? format(startDate, "mmmm dd, yyyy") : "Start Date"}
-							</Typography>
+					<Grid container justify="center" wrap="nowrap">
+						<Grid className={classes.ranges}>
+							<DefinedRanges
+								selectedRange={dateRange}
+								ranges={ranges}
+								setRange={setDateRange}
+								/>
 						</Grid>
-						<Grid item className={classes.headerItem}>
-							<ArrowRightAlt color="action" />
-						</Grid>
-						<Grid item className={classes.headerItem}>
-							<Typography variant="subtitle1">
-								{endDate ? format(endDate, "mmmm dd, yyyy") : "End Date"}
-							</Typography>
-						</Grid>
-					</Grid>
-					<Divider />
-					<Grid container direction="row" justify="center" wrap="nowrap">
+						<div className={classes.divider} />
 						<Month
 							{...commonProps}
 							value={firstMonth}
@@ -97,7 +119,6 @@ const Menu: React.FunctionComponent<MenuProps> = props => {
 							navState={[true, canNavigateCloser]}
 							marker={MARKERS.FIRST_MONTH}
 						/>
-						<div className={classes.divider} />
 						<Month
 							{...commonProps}
 							value={secondMonth}
@@ -106,15 +127,14 @@ const Menu: React.FunctionComponent<MenuProps> = props => {
 							marker={MARKERS.SECOND_MONTH}
 						/>
 					</Grid>
+
 				</Grid>
 				<div className={classes.divider} />
-				<Grid>
-					<DefinedRanges
-						selectedRange={dateRange}
-						ranges={ranges}
-						setRange={setDateRange}
-					/>
-				</Grid>
+			</Grid>
+			<Divider />
+			<Grid className={classes.buttonsWrapper}>
+				<button onClick={handleApply} className={classes.applyButton}> Apply </button>
+				<button onClick={handleCancel} className={classes.cancelButton}> Cancel </button>
 			</Grid>
 		</Paper>
 	);

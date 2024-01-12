@@ -13,9 +13,9 @@ A react date range picker using material-ui components.
 ## Usage
 
 ```bash
-npm install @matharumanpreet00/react-daterange-picker --save
+npm install @ricardopaul0/react-daterange-picker --save
 # or with yarn
-yarn add @matharumanpreet00/react-daterange-picker
+yarn add @ricardopaul0/react-daterange-picker
 ```
 
 ![Screenshot](/screenshot_1.png?raw=true "Screenshot")
@@ -23,7 +23,7 @@ yarn add @matharumanpreet00/react-daterange-picker
 ## Basic Example
 ```tsx
 import React from "react";
-import { DateRangePicker, DateRange } from "@matharumanpreet00/react-daterange-picker";
+import { DateRangePicker, DateRange } from "@ricardopaul0/react-daterange-picker";
 
 type Props = {}
 type State = {
@@ -53,7 +53,7 @@ export default App;
 ## Basic example using hooks
 ```tsx
 import React from "react";
-import { DateRangePicker, DateRange } from "@matharumanpreet00/react-daterange-picker";
+import { DateRangePicker, DateRange } from "@ricardopaul0/react-daterange-picker";
 
 type Props = {}
 

@@ -100,14 +100,13 @@ const Header: React.FunctionComponent<HeaderProps> = ({
 					value={getYear(date)}
 					onChange={handleYearChange}
 					MenuProps={{ disablePortal: true }}>
-					{generateYears(date, 30).map(year => (
+					{generateYears(date, 54).slice(3).map(year => (
 						<MenuItem key={year} value={year}>
 							{year}
 						</MenuItem>
 					))}
 				</Select>
 
-				{/* <Typography>{format(date, "MMMM YYYY")}</Typography> */}
 			</Grid>
 			<Grid item className={classes.iconContainer}>
 				<IconButton className={classes.icon} disabled={nextDisabled} onClick={onClickNext}>

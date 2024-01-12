@@ -24,10 +24,10 @@ interface DayProps extends WithStyles<typeof styles> {
 const styles = (theme: Theme) =>
 	createStyles({
 		leftBorderRadius: {
-			borderRadius: "50% 0 0 50%"
+			borderRadius: "5% 0 0 5%"
 		},
 		rightBorderRadius: {
-			borderRadius: "0 50% 50% 0"
+			borderRadius: "0 5% 5% 0"
 		},
 		buttonContainer: {
 			display: "flex"
@@ -41,13 +41,13 @@ const styles = (theme: Theme) =>
 			lineHeight: 1.6
 		},
 		outlined: {
-			border: `1px solid ${theme.palette.primary.dark}`
+			border: `1px solid #4181f9`
 		},
 		filled: {
 			"&:hover": {
 				backgroundColor: theme.palette.primary.dark
 			},
-			backgroundColor: theme.palette.primary.dark
+			backgroundColor: "#4181f9"
 		},
 		highlighted: {
 			backgroundColor: theme.palette.action.hover
