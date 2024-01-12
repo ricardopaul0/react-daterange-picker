@@ -1,4 +1,4 @@
-# react-daterange-picker 
+# gp-react-daterange-picker 
 A react date range picker using material-ui components.
 
 <a href='https://www.npmjs.com/package/@matharumanpreet00/react-daterange-picker'>
