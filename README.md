@@ -8,14 +8,12 @@ A react date range picker using material-ui components.
 ## Live Demo: https://flippingbitss.github.io/react-daterange-picker/
 
 
-
-
 ## Usage
 
 ```bash
-npm install @ricardopaul0/react-daterange-picker --save
+npm install gp-react-daterange-picker --save
 # or with yarn
-yarn add @ricardopaul0/react-daterange-picker
+yarn add gp-react-daterange-picker
 ```
 
 ![Screenshot](/date-range-picker.png?raw=true "Screenshot")
@@ -23,7 +21,7 @@ yarn add @ricardopaul0/react-daterange-picker
 ## Basic Example
 ```tsx
 import React from "react";
-import { DateRangePicker, DateRange } from "@ricardopaul0/react-daterange-picker";
+import { DateRangePicker, DateRange } from "gp-react-daterange-picker";
 
 type Props = {}
 type State = {
@@ -53,7 +51,7 @@ export default App;
 ## Basic example using hooks
 ```tsx
 import React from "react";
-import { DateRangePicker, DateRange } from "@ricardopaul0/react-daterange-picker";
+import { DateRangePicker, DateRange } from "gp-react-daterange-picker";
 
 type Props = {}
 
@@ -95,4 +93,5 @@ Name | Type | Required | Default value | Description
 `maxDate` | `Date | string` | | 10 years from now | max date allowed in range
 `onChange` | `(DateRange) => void` | _required_ | - | handler function for providing selected date range
 `definedRanges` | `DefinedRange[]` | | - | custom defined ranges to show in the list
-
+`handleApply` | `() => void` | | - | handler for Apply action
+`handleCancel` | `() => void` | | - | handler for Cancel action
