@@ -67,6 +67,7 @@ interface MenuProps extends WithStyles<typeof styles> {
 	setFirstMonth: Setter<Date>;
 	setSecondMonth: Setter<Date>;
 	setDateRange: Setter<DateRange>;
+	isIntervalCheckEnabled: Boolean;
 	helpers: {
 		inHoverRange: (day: Date) => boolean;
 	};
@@ -86,6 +87,7 @@ const Menu: React.FunctionComponent<MenuProps> = props => {
 		dateRange,
 		minDate,
 		maxDate,
+		isIntervalCheckEnabled,
 		firstMonth,
 		setFirstMonth,
 		secondMonth,
@@ -96,9 +98,8 @@ const Menu: React.FunctionComponent<MenuProps> = props => {
 		handleApply,
 		handleCancel,
 	} = props;
-	const { startDate, endDate } = dateRange;
 	const canNavigateCloser = differenceInCalendarMonths(secondMonth, firstMonth) >= 2;
-	const commonProps = { dateRange, minDate, maxDate, helpers, handlers };
+	const commonProps = { dateRange, minDate, maxDate, helpers, handlers, isIntervalCheckEnabled };
 	return (
 		<Paper elevation={5} square>
 			<Grid container direction="row" wrap="nowrap">
@@ -134,7 +135,15 @@ const Menu: React.FunctionComponent<MenuProps> = props => {
 			<Divider />
 			<Grid className={classes.buttonsWrapper}>
 				<button onClick={handleApply} className={classes.applyButton}> Apply </button>
-				<button onClick={handleCancel} className={classes.cancelButton}> Cancel </button>
+				<button onClick={handleCancel} style={{
+					cursor: "pointer",
+					backgroundColor: grey[40],
+					border: "1px solid #b8b8b8",
+					padding: 10,
+					fontWeight: 600,
+					borderRadius: 5,
+					width: 92
+				}}> Cancel </button>
 			</Grid>
 		</Paper>
 	);

@@ -1,6 +1,6 @@
 {
 	"name": "gp-react-daterange-picker",
-	"version": "1.0.7",
+	"version": "1.0.9",
 	"description": "A react date range picker using Material Design",
 	"author": "ricardopaul0",
 	"repository": {

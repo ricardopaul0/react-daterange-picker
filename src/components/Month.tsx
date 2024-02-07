@@ -47,6 +47,7 @@ interface MonthProps extends WithStyles<typeof styles> {
 	dateRange: DateRange;
 	minDate: Date;
 	maxDate: Date;
+	isIntervalCheckEnabled: Boolean;
 	navState: [boolean, boolean];
 	setValue: (date: Date) => void;
 	helpers: {
@@ -69,7 +70,8 @@ const Month: React.FunctionComponent<MonthProps> = props => {
 		marker,
 		setValue: setDate,
 		minDate,
-		maxDate
+		maxDate,
+		isIntervalCheckEnabled,
 	} = props;
 
 	const [back, forward] = props.navState;
@@ -81,10 +83,8 @@ const Month: React.FunctionComponent<MonthProps> = props => {
 					setDate={setDate}
 					nextDisabled={!forward}
 					prevDisabled={!back}
-					onClickPrevious={() =>
-						handlers.onMonthNavigate(marker, NavigationAction.Previous)
-					}
-					onClickNext={() => handlers.onMonthNavigate(marker, NavigationAction.Next)}
+					marker={marker}
+					handlers={handlers}
 				/>
 
 				<Grid
@@ -115,6 +115,15 @@ const Month: React.FunctionComponent<MonthProps> = props => {
 								const highlighted =
 									inDateRange(dateRange, day) || helpers.inHoverRange(day);
 
+								let _isWithinInterval = true
+
+								if(isIntervalCheckEnabled) {
+									_isWithinInterval = isWithinInterval(day, {
+										start: minDate,
+										end: maxDate
+									})
+								}
+
 								return (
 									<Day
 										key={format(day, "mm-dd-yyyy")}
@@ -122,11 +131,7 @@ const Month: React.FunctionComponent<MonthProps> = props => {
 										outlined={isToday(day)}
 										highlighted={highlighted && !isRangeOneDay}
 										disabled={
-											!isSameMonth(date, day) ||
-											!isWithinInterval(day, {
-												start: minDate,
-												end: maxDate
-											})
+											!isSameMonth(date, day) || !_isWithinInterval
 										}
 										startOfRange={isStart && !isRangeOneDay}
 										endOfRange={isEnd && !isRangeOneDay}

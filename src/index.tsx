@@ -41,6 +41,7 @@ interface DateRangePickerProps {
 	definedRanges?: DefinedRange[];
 	minDate?: Date | string;
 	maxDate?: Date | string;
+	isIntervalCheckEnabled: Boolean;
 	onChange: (dateRange: DateRange) => void;
 	handleApply: () => void;
 	handleCancel: () => void;
@@ -58,6 +59,7 @@ const DateRangePickerImpl: React.FunctionComponent<DateRangePickerProps> = props
 		definedRanges = defaultRanges,
 		handleApply,
 		handleCancel,
+		isIntervalCheckEnabled,
 	} = props;
 
 	const minDateValid = parseOptionalDate(minDate, addYears(today, -10));
@@ -68,7 +70,6 @@ const DateRangePickerImpl: React.FunctionComponent<DateRangePickerProps> = props
 		maxDateValid
 	);
 
-	// console.log("rendering DateRangePicker");
 	const [dateRange, setDateRange] = useState<DateRange>({ ...initialDateRange });
 	const [hoverDay, setHoverDay] = useState<Date>();
 	const [firstMonth, setFirstMonth] = useState<Date>(intialFirstMonth || today);
@@ -114,7 +115,20 @@ const DateRangePickerImpl: React.FunctionComponent<DateRangePickerProps> = props
 		setHoverDay(day);
 	};
 
+const MIN_YEAR = 2000;
+const MAX_YEAR = 2050;
+
 	const onMonthNavigate = (marker: Marker, action: NavigationAction) => {
+		if(action === -1) {
+			const previousDate = new Date(addMonths(firstMonth, action));
+			if (previousDate.getFullYear() < MIN_YEAR && previousDate.getMonth() === 11) return
+		}
+
+		if(action === 1) {
+			const nextDate = addMonths(secondMonth, action);
+			if (nextDate.getFullYear() > MAX_YEAR && nextDate.getMonth() === 0) return
+		}
+
 		if (marker == MARKERS.FIRST_MONTH) {
 			const firstNew = addMonths(firstMonth, action);
 			if (isBefore(firstNew, secondMonth)) setFirstMonth(firstNew);
@@ -169,6 +183,7 @@ const DateRangePickerImpl: React.FunctionComponent<DateRangePickerProps> = props
 			handlers={handlers}
 			handleApply={handleApply}
 			handleCancel={handleCancel}
+			isIntervalCheckEnabled={isIntervalCheckEnabled}
 		/>
 	) : null;
 };

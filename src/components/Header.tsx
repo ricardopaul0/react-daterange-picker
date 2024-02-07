@@ -11,14 +11,19 @@ import React from "react";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import { setMonth, getMonth, setYear, getYear } from "date-fns";
+import { NavigationAction } from "../types";
 
 interface HeaderProps extends WithStyles<typeof styles> {
 	date: Date;
 	setDate: (date: Date) => void;
 	nextDisabled: boolean;
 	prevDisabled: boolean;
-	onClickNext: () => void;
-	onClickPrevious: () => void;
+	marker: symbol;
+	handlers: {
+		onDayClick: (day: Date) => void;
+		onDayHover: (day: Date) => void;
+		onMonthNavigate: (marker: symbol, action: NavigationAction) => void;
+	};
 }
 
 const styles = createStyles({
@@ -48,12 +53,13 @@ const MONTHS = [
 	"Dec"
 ];
 
-const generateYears = (relativeTo: Date, count: number) => {
-	const half = Math.floor(count / 2);
-	return Array(count)
-		.fill(0)
-		.map((y, i) => relativeTo.getFullYear() - half + i); // TODO: make part of the state
-};
+function generateYearRange(startYear: number, endYear: number) {
+  let years = [];
+  for (let year = startYear; year <= endYear; year++) {
+    years.push(year);
+  }
+  return years;
+}
 
 const Header: React.FunctionComponent<HeaderProps> = ({
 	date,
@@ -61,8 +67,8 @@ const Header: React.FunctionComponent<HeaderProps> = ({
 	setDate,
 	nextDisabled,
 	prevDisabled,
-	onClickNext,
-	onClickPrevious
+	marker,
+	handlers,
 }) => {
 	const handleMonthChange = (event: React.ChangeEvent<{ value: unknown }>) => {
 		setDate(setMonth(date, parseInt(event.target.value as string)));
@@ -72,13 +78,16 @@ const Header: React.FunctionComponent<HeaderProps> = ({
 		setDate(setYear(date, parseInt(event.target.value as string)));
 	};
 
+
 	return (
 		<Grid container justify="space-between" alignItems="center">
 			<Grid item className={classes.iconContainer}>
 				<IconButton
 					className={classes.icon}
 					disabled={prevDisabled}
-					onClick={onClickPrevious}>
+					onClick={() => {
+						handlers.onMonthNavigate(marker, NavigationAction.Previous)
+					}}>
 					<ChevronLeft color={prevDisabled ? "disabled" : "action"} />
 				</IconButton>
 			</Grid>
@@ -100,7 +109,7 @@ const Header: React.FunctionComponent<HeaderProps> = ({
 					value={getYear(date)}
 					onChange={handleYearChange}
 					MenuProps={{ disablePortal: true }}>
-					{generateYears(date, 54).slice(3).map(year => (
+					{generateYearRange(2000, 2050).map((year) => (
 						<MenuItem key={year} value={year}>
 							{year}
 						</MenuItem>
@@ -109,7 +118,9 @@ const Header: React.FunctionComponent<HeaderProps> = ({
 
 			</Grid>
 			<Grid item className={classes.iconContainer}>
-				<IconButton className={classes.icon} disabled={nextDisabled} onClick={onClickNext}>
+				<IconButton className={classes.icon} disabled={nextDisabled} onClick={
+					() => { handlers.onMonthNavigate(marker, NavigationAction.Next ) }
+				}>
 					<ChevronRight color={nextDisabled ? "disabled" : "action"} />
 				</IconButton>
 			</Grid>
